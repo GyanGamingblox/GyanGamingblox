@@ -1,0 +1,35 @@
+-- Script to fetch and execute a remote Lua script
+local url = "https://raw.githubusercontent.com/REDzHUB/BloxFruits/main/redz9999"
+
+-- Function to fetch and execute the script
+local function fetchAndExecute(scriptUrl)
+    print("Attempting to fetch script from: " .. scriptUrl)
+
+    local success, result = pcall(function()
+        return game:HttpGet(scriptUrl)
+    end)
+
+    if success then
+        print("Script fetched successfully!")
+        local func, errorMsg = loadstring(result)
+        if func then
+            print("Script loaded successfully! Executing now...")
+            func()
+        else
+            warn("Error loading script: " .. errorMsg)
+        end
+    else
+        warn("Failed to fetch the script: " .. result)
+        print("Running fallback script instead.")
+        -- Example fallback functionality
+        local part = Instance.new("Part")
+        part.Size = Vector3.new(4, 4, 4)
+        part.Position = Vector3.new(0, 10, 0)
+        part.Anchored = true
+        part.BrickColor = BrickColor.new("Bright red")
+        part.Parent = game.Workspace
+    end
+end
+
+-- Call the function
+fetchAndExecute(url)
